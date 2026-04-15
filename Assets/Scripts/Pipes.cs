@@ -13,6 +13,8 @@ public class Pipes : MonoBehaviour
 
 	void Update()
     {
+        if (GameManager.Instance.IsPlayerDead) return;
+
         transform.position += Vector3.left * moveSpeed * Time.deltaTime;
 
         if (transform.position.x < leftBound)

@@ -12,6 +12,7 @@ public class Parallax : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.IsPlayerDead) return;
         meshRenderer.material.mainTextureOffset += new Vector2(scrollSpeed, 0) * Time.deltaTime;
     }
 }

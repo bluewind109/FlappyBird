@@ -22,6 +22,13 @@ public class Player : MonoBehaviour
         InvokeRepeating(nameof(AnimateSprite), 0.15f, 0.15f);
     }
 
+    public void Reset()
+    {
+        direction = Vector3.zero;
+        transform.position = Vector3.zero;
+        InvokeRepeating(nameof(AnimateSprite), 0.15f, 0.15f);
+    }
+
     private void AnimateSprite()
     {
         spriteIndex = (spriteIndex + 1) % sprites.Length;
@@ -30,6 +37,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.IsPlayerDead) return;
+
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(LEFT_CLICK))
         {
             direction = Vector3.up * jumpStrength;
@@ -46,5 +55,25 @@ public class Player : MonoBehaviour
 
         direction.y += gravity * Time.deltaTime;
         transform.position += direction * Time.deltaTime;
+    }
+
+    private void OnDead()
+    {
+        CancelInvoke(nameof(AnimateSprite));
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("ScoreZone"))
+        {
+            GameManager.Instance.IncreaseScore();
+        }
+        else if (collision.CompareTag("DeadZone"))
+        {
+            // Handle player death (e.g., restart game, show game over screen)
+            Debug.Log("Player died!");
+            OnDead();
+            GameManager.Instance.GameOver();
+        }
     }
 }
