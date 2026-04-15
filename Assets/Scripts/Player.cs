@@ -3,7 +3,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
-    public Sprite[] sprites;
+    [SerializeField] private Sprite[] sprites;
     private int spriteIndex = 0;
 
     private Vector3 direction;
